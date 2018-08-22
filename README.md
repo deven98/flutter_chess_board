@@ -1,8 +1,8 @@
-# chess_board
+# flutter_chess_board
 
 A Chess Board widget for Flutter.
 
-![alt text](https://github.com/deven98/chess_board/blob/master/screen_shot.png)
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png)
 
 ### Import the package 
 
