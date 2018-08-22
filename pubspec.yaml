@@ -1,9 +1,9 @@
-name: chess_board
+name: flutter_chess_board
 description: A Chessboard widget for Flutter.
 version: 0.0.1
 author: Deven Joshi <deven9852@gmail.com>
 
-homepage: https://www.github.com/deven98/chess_board
+homepage: https://www.github.com/deven98/flutter_chess_board
 
 dependencies:
   chess: ">=0.6.4 <0.7.0"

@@ -6,12 +6,12 @@ A Chess Board widget for Flutter.
 
 ### Import the package 
 
-To use this package, [add chess_board as a dependency](https://pub.dartlang.org/packages/chess_board#-installing-tab-) in your pubspec.yaml
+To use this package, [add chess_board as a dependency](https://pub.dartlang.org/packages/flutter_chess_board#-installing-tab-) in your pubspec.yaml
 
 ### Example
 
         import 'package:flutter/material.dart';
-        import 'package:chess_board/chess_board.dart';
+        import 'package:flutter_chess_board/flutter_chess_board.dart';
         
         void main() {
           runApp(
