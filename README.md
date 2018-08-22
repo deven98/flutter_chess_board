@@ -2,7 +2,7 @@
 
 A Chess Board widget for Flutter.
 
-
+![alt text](https://github.com/deven98/chess_board/blob/master/screen_shot.png)
 
 ### Import the package 
 
