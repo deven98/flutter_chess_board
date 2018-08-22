@@ -6,8 +6,9 @@ author: Deven Joshi <deven9852@gmail.com>
 homepage: https://www.github.com/deven98/chess_board
 
 dependencies:
-  chess_vectors_flutter: ^1.0.6
-  chess: ^0.6.4
+  chess: ">=0.6.4 <0.7.0"
+  chess_vectors_flutter: ">=1.0.6 <2.0.0"
+
   flutter:
     sdk: flutter
 
