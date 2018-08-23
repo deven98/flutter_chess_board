@@ -1,7 +1,7 @@
 # flutter_chess_board
 
-A Chess Board widget for Flutter. The widget maintains game state and supplies callbacks for things
-like a move, checkmate or draw. This widget is still is active development.
+A Chessboard Widget for Flutter. The widget maintains game state and gives callbacks for game events 
+like moves, checkmate and draws. This widget is still in active development.
 
 ![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png)
 
