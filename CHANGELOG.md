@@ -1,3 +1,3 @@
-## [0.0.4] - 22/08/2018.
+## [0.0.5] - 23/08/2018.
 
-* Corrected description.
+* Fixed critical image loading bug.
