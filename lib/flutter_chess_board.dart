@@ -46,7 +46,10 @@ class _ChessBoardState extends State<ChessBoard> {
           Container(
             height: widget.size,
             width: widget.size,
-            child: Image.asset("images/chess_board.png", package: 'flutter_chess_board',),
+            child: Image.asset(
+              "images/chess_board.png",
+              package: 'flutter_chess_board',
+            ),
           ),
 
           //Overlaying draggables/ dragTargets onto the squares
