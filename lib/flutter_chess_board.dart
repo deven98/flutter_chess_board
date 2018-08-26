@@ -22,8 +22,13 @@ class ChessBoard extends StatefulWidget {
   // Defines the callback on draw.
   final VoidCallback onDraw;
 
+  // Defines what orientation to draw the board.
+  // If the user is white, the white pieces face the user.
+  final bool whiteSideTowardsUser;
+
   ChessBoard(
       {this.size = 200.0,
+      this.whiteSideTowardsUser = true,
       @required this.onMove,
       @required this.onCheckMate,
       @required this.onDraw});
@@ -55,141 +60,9 @@ class _ChessBoardState extends State<ChessBoard> {
           //Overlaying draggables/ dragTargets onto the squares
           Center(
             child: Container(
-              height: widget.size * 0.89,
-              width: widget.size * 0.89,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  ChessBoardRank(
-                    children: [
-                      "a8",
-                      "b8",
-                      "c8",
-                      "d8",
-                      "e8",
-                      "f8",
-                      "g8",
-                      "h8",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a7",
-                      "b7",
-                      "c7",
-                      "d7",
-                      "e7",
-                      "f7",
-                      "g7",
-                      "h7",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a6",
-                      "b6",
-                      "c6",
-                      "d6",
-                      "e6",
-                      "f6",
-                      "g6",
-                      "h6",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a5",
-                      "b5",
-                      "c5",
-                      "d5",
-                      "e5",
-                      "f5",
-                      "g5",
-                      "h5",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a4",
-                      "b4",
-                      "c4",
-                      "d4",
-                      "e4",
-                      "f4",
-                      "g4",
-                      "h4",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a3",
-                      "b3",
-                      "c3",
-                      "d3",
-                      "e3",
-                      "f3",
-                      "g3",
-                      "h3",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a2",
-                      "b2",
-                      "c2",
-                      "d2",
-                      "e2",
-                      "f2",
-                      "g2",
-                      "h2",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                  ChessBoardRank(
-                    children: [
-                      "a1",
-                      "b1",
-                      "c1",
-                      "d1",
-                      "e1",
-                      "f1",
-                      "g1",
-                      "h1",
-                    ],
-                    game: game,
-                    size: widget.size,
-                    onMove: widget.onMove,
-                    refreshBoard: refreshBoard,
-                  ),
-                ],
-              ),
+              height: widget.size,
+              width: widget.size,
+              child: buildChessBoard(),
             ),
           )
         ],
@@ -204,6 +77,113 @@ class _ChessBoardState extends State<ChessBoard> {
     } else if (game.in_draw || game.in_stalemate) {
       widget.onDraw();
     }
+  }
+
+  Widget buildChessBoard() {
+    var whiteSquareList = [
+      [
+        "a8",
+        "b8",
+        "c8",
+        "d8",
+        "e8",
+        "f8",
+        "g8",
+        "h8",
+      ],
+      [
+        "a7",
+        "b7",
+        "c7",
+        "d7",
+        "e7",
+        "f7",
+        "g7",
+        "h7",
+      ],
+      [
+        "a6",
+        "b6",
+        "c6",
+        "d6",
+        "e6",
+        "f6",
+        "g6",
+        "h6",
+      ],
+      [
+        "a5",
+        "b5",
+        "c5",
+        "d5",
+        "e5",
+        "f5",
+        "g5",
+        "h5",
+      ],
+      [
+        "a4",
+        "b4",
+        "c4",
+        "d4",
+        "e4",
+        "f4",
+        "g4",
+        "h4",
+      ],
+      [
+        "a3",
+        "b3",
+        "c3",
+        "d3",
+        "e3",
+        "f3",
+        "g3",
+        "h3",
+      ],
+      [
+        "a2",
+        "b2",
+        "c2",
+        "d2",
+        "e2",
+        "f2",
+        "g2",
+        "h2",
+      ],
+      [
+        "a1",
+        "b1",
+        "c1",
+        "d1",
+        "e1",
+        "f1",
+        "g1",
+        "h1",
+      ],
+    ];
+
+    return Column(
+      children: widget.whiteSideTowardsUser
+          ? whiteSquareList.map((row) {
+              return ChessBoardRank(
+                children: row,
+                game: game,
+                size: widget.size,
+                onMove: widget.onMove,
+                refreshBoard: refreshBoard,
+              );
+            }).toList()
+          : whiteSquareList.reversed.map((row) {
+              return ChessBoardRank(
+                children: row.reversed.toList(),
+                game: game,
+                size: widget.size,
+                onMove: widget.onMove,
+                refreshBoard: refreshBoard,
+              );
+            }).toList(),
+    );
   }
 }
 
@@ -261,9 +241,8 @@ class _BoardSquareState extends State<BoardSquare> {
       child: DragTarget(builder: (context, accepted, rejected) {
         return widget.game.get(widget.squareName) != null
             ? Draggable(
-                child: _getImageToDisplay(size: 45.0 * (widget.size / 400.0)),
-                feedback:
-                    _getImageToDisplay(size: 55.0 * (widget.size / 400.0)),
+                child: _getImageToDisplay(size: widget.size / 8),
+                feedback: _getImageToDisplay(size: (1.2 * (widget.size / 8))),
                 onDragCompleted: () {},
                 data: [
                   widget.squareName,
@@ -366,36 +345,37 @@ class _BoardSquareState extends State<BoardSquare> {
       barrierDismissible: false,
       builder: (BuildContext context) {
         return new AlertDialog(
-            title: new Text('Choose promotion'),
-            content: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                InkWell(
-                  child: WhiteQueen(),
-                  onTap: () {
-                    Navigator.of(context).pop("q");
-                  },
-                ),
-                InkWell(
-                  child: WhiteRook(),
-                  onTap: () {
-                    Navigator.of(context).pop("r");
-                  },
-                ),
-                InkWell(
-                  child: WhiteBishop(),
-                  onTap: () {
-                    Navigator.of(context).pop("b");
-                  },
-                ),
-                InkWell(
-                  child: WhiteKnight(),
-                  onTap: () {
-                    Navigator.of(context).pop("n");
-                  },
-                ),
-              ],
-            ));
+          title: new Text('Choose promotion'),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              InkWell(
+                child: WhiteQueen(),
+                onTap: () {
+                  Navigator.of(context).pop("q");
+                },
+              ),
+              InkWell(
+                child: WhiteRook(),
+                onTap: () {
+                  Navigator.of(context).pop("r");
+                },
+              ),
+              InkWell(
+                child: WhiteBishop(),
+                onTap: () {
+                  Navigator.of(context).pop("b");
+                },
+              ),
+              InkWell(
+                child: WhiteKnight(),
+                onTap: () {
+                  Navigator.of(context).pop("n");
+                },
+              ),
+            ],
+          ),
+        );
       },
     ).then((value) {
       return value;
