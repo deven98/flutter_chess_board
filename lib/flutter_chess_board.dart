@@ -26,12 +26,20 @@ class ChessBoard extends StatefulWidget {
   // If the user is white, the white pieces face the user.
   final bool whiteSideTowardsUser;
 
+  // A Controller to make programmatic moves instead of drag-and-drop.
+  final ChessBoardController chessBoardController;
+
+  // Disables the chessboard from user moves when set to false;
+  final bool enableUserMoves;
+
   ChessBoard(
       {this.size = 200.0,
       this.whiteSideTowardsUser = true,
       @required this.onMove,
       @required this.onCheckMate,
-      @required this.onDraw});
+      @required this.onDraw,
+      this.chessBoardController,
+      this.enableUserMoves = true});
 
   @override
   _ChessBoardState createState() => _ChessBoardState();
@@ -39,6 +47,15 @@ class ChessBoard extends StatefulWidget {
 
 class _ChessBoardState extends State<ChessBoard> {
   chess.Chess game = chess.Chess();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.chessBoardController != null) {
+      widget.chessBoardController.game = game;
+      widget.chessBoardController.refreshBoard = refreshBoard;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -172,6 +189,7 @@ class _ChessBoardState extends State<ChessBoard> {
                 size: widget.size,
                 onMove: widget.onMove,
                 refreshBoard: refreshBoard,
+                enableUserMoves: widget.enableUserMoves,
               );
             }).toList()
           : whiteSquareList.reversed.map((row) {
@@ -181,6 +199,7 @@ class _ChessBoardState extends State<ChessBoard> {
                 size: widget.size,
                 onMove: widget.onMove,
                 refreshBoard: refreshBoard,
+                enableUserMoves: widget.enableUserMoves,
               );
             }).toList(),
     );
@@ -195,13 +214,15 @@ class ChessBoardRank extends StatelessWidget {
   final double size;
   final MoveCallback onMove;
   final Function refreshBoard;
+  final bool enableUserMoves;
 
   ChessBoardRank(
       {this.children = const [],
       @required this.game,
       this.size,
       this.onMove,
-      this.refreshBoard});
+      this.refreshBoard,
+      this.enableUserMoves});
 
   @override
   Widget build(BuildContext context) {
@@ -210,7 +231,7 @@ class ChessBoardRank extends StatelessWidget {
       child: Row(
         children: children
             .map((squareName) =>
-                BoardSquare(squareName, game, size, onMove, refreshBoard))
+                BoardSquare(squareName, game, size, onMove, refreshBoard, enableUserMoves))
             .toList(),
       ),
     );
@@ -225,9 +246,10 @@ class BoardSquare extends StatefulWidget {
   final double size;
   final MoveCallback onMove;
   final Function refreshBoard;
+  final bool enableUserMoves;
 
   BoardSquare(
-      this.squareName, this.game, this.size, this.onMove, this.refreshBoard);
+      this.squareName, this.game, this.size, this.onMove, this.refreshBoard, this.enableUserMoves);
 
   @override
   _BoardSquareState createState() => _BoardSquareState();
@@ -252,7 +274,7 @@ class _BoardSquareState extends State<BoardSquare> {
               )
             : Container();
       }, onWillAccept: (willAccept) {
-        return true;
+        return widget.enableUserMoves? true : false;
       }, onAccept: (List moveInfo) {
         if (moveInfo[1] == "P" &&
             ((moveInfo[0][1] == "7" &&
@@ -381,4 +403,29 @@ class _BoardSquareState extends State<BoardSquare> {
       return value;
     });
   }
+}
+
+class ChessBoardController {
+  chess.Chess game;
+  Function refreshBoard;
+
+  void makeMove(String from, String to) {
+    game?.move({"from": from, "to": to});
+    refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
+  }
+
+  void makeMoveWithPromotion(String from, String to, String pieceToPromoteTo) {
+    game?.move({"from": from, "to": to, "promotion": pieceToPromoteTo});
+    refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
+  }
+
+  void resetBoard() {
+    game?.reset();
+    refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
+  }
+
+  void _throwNotAttachedException() {
+    throw Exception("Controller not attached to a ChessBoard widget!");
+  }
+
 }

@@ -40,6 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
               onDraw: () {},
               size: MediaQuery.of(context).size.width,
+              enableUserMoves: true,
             )
           ],
         ),

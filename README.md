@@ -39,26 +39,34 @@ To use this package, [add chess_board as a dependency](https://pub.dartlang.org/
 
 ## Board parameters:
 
-###size: 
+### size: 
 
 Gives length and width of chess board
 
-###onMove:
+### onMove:
 
 Callback for when a move is made. Returns a move as a string. E.g.: "Nf4"
 
-###onDraw:
+### onDraw:
 
 Callback for when game becomes a draw.
 
-###onCheckMate: 
+### onCheckMate: 
 
 Callback for when a player checkmates the other. Returns the color of the winner.
 
-###whiteSideTowardsUser:
+### whiteSideTowardsUser:
 
 Defines if white or black side faces user. The player is white by default(true). If 
 set to false, black faces the user.
+
+### controller
+
+Defines the ChessBoardController for the widget for changing the board programmatically.
+
+### enableUserMoves
+
+Disables user moves when set to false.
 
 ### Getting Started
 
