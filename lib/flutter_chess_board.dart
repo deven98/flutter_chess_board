@@ -230,8 +230,8 @@ class ChessBoardRank extends StatelessWidget {
       flex: 1,
       child: Row(
         children: children
-            .map((squareName) =>
-                BoardSquare(squareName, game, size, onMove, refreshBoard, enableUserMoves))
+            .map((squareName) => BoardSquare(
+                squareName, game, size, onMove, refreshBoard, enableUserMoves))
             .toList(),
       ),
     );
@@ -248,8 +248,8 @@ class BoardSquare extends StatefulWidget {
   final Function refreshBoard;
   final bool enableUserMoves;
 
-  BoardSquare(
-      this.squareName, this.game, this.size, this.onMove, this.refreshBoard, this.enableUserMoves);
+  BoardSquare(this.squareName, this.game, this.size, this.onMove,
+      this.refreshBoard, this.enableUserMoves);
 
   @override
   _BoardSquareState createState() => _BoardSquareState();
@@ -274,7 +274,7 @@ class _BoardSquareState extends State<BoardSquare> {
               )
             : Container();
       }, onWillAccept: (willAccept) {
-        return widget.enableUserMoves? true : false;
+        return widget.enableUserMoves ? true : false;
       }, onAccept: (List moveInfo) {
         if (moveInfo[1] == "P" &&
             ((moveInfo[0][1] == "7" &&
@@ -405,6 +405,13 @@ class _BoardSquareState extends State<BoardSquare> {
   }
 }
 
+enum PieceType { Pawn, Rook, Knight, Bishop, Queen, King }
+
+enum PieceColor {
+  White,
+  Black,
+}
+
 class ChessBoardController {
   chess.Chess game;
   Function refreshBoard;
@@ -424,8 +431,39 @@ class ChessBoardController {
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  void clearBoard() {
+    game?.clear();
+    refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
+  }
+
+  void putPiece(PieceType piece, String square, PieceColor color) {
+    game?.put(_getPiece(piece, color), square);
+  }
+
   void _throwNotAttachedException() {
     throw Exception("Controller not attached to a ChessBoard widget!");
   }
 
+  chess.Piece _getPiece(PieceType piece, PieceColor color) {
+    chess.Color _getColor(PieceColor color) {
+      return color == PieceColor.White ? chess.Color.WHITE : chess.Color.BLACK;
+    }
+
+    switch (piece) {
+      case PieceType.Bishop:
+        return chess.Piece(chess.PieceType.BISHOP, _getColor(color));
+      case PieceType.Queen:
+        return chess.Piece(chess.PieceType.QUEEN, _getColor(color));
+      case PieceType.King:
+        return chess.Piece(chess.PieceType.KING, _getColor(color));
+      case PieceType.Knight:
+        return chess.Piece(chess.PieceType.KNIGHT, _getColor(color));
+      case PieceType.Pawn:
+        return chess.Piece(chess.PieceType.PAWN, _getColor(color));
+      case PieceType.Rook:
+        return chess.Piece(chess.PieceType.ROOK, _getColor(color));
+    }
+
+    return chess.Piece(chess.PieceType.PAWN, chess.Color.WHITE);
+  }
 }

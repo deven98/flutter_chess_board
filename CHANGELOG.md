@@ -1,4 +1,3 @@
-## [0.2.0] - 26/08/2018.
+## [0.2.1] - 26/08/2018.
 
-* Added ChessBoardController for programmatic moves.
-* Added disabling the chessboard from user moves.
+* Added clear board and put piece functionality to controller.
