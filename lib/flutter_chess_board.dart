@@ -438,6 +438,7 @@ class ChessBoardController {
 
   void putPiece(PieceType piece, String square, PieceColor color) {
     game?.put(_getPiece(piece, color), square);
+    refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
   void _throwNotAttachedException() {

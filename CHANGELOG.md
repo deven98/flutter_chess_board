@@ -1,3 +1,3 @@
-## [0.2.1] - 26/08/2018.
+## [0.2.2] - 26/08/2018.
 
-* Added clear board and put piece functionality to controller.
+* Fixed board not refreshing on putPiece with controller.
