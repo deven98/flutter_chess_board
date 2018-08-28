@@ -276,6 +276,9 @@ class _BoardSquareState extends State<BoardSquare> {
       }, onWillAccept: (willAccept) {
         return widget.enableUserMoves ? true : false;
       }, onAccept: (List moveInfo) {
+        // A way to check if move occurred.
+        chess.Color moveColor = widget.game.turn;
+
         if (moveInfo[1] == "P" &&
             ((moveInfo[0][1] == "7" &&
                     widget.squareName[1] == "8" &&
@@ -294,9 +297,11 @@ class _BoardSquareState extends State<BoardSquare> {
         } else {
           widget.game.move({"from": moveInfo[0], "to": widget.squareName});
         }
-        widget.onMove(moveInfo[1] == "P"
-            ? widget.squareName
-            : moveInfo[1] + widget.squareName);
+        if (widget.game.turn != moveColor) {
+          widget.onMove(moveInfo[1] == "P"
+              ? widget.squareName
+              : moveInfo[1] + widget.squareName);
+        }
         widget.refreshBoard();
       }),
     );
