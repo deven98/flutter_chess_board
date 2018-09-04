@@ -1,4 +1,3 @@
-## [0.2.2] - 26/08/2018.
+## [0.2.3] - 26/08/2018.
 
-* Fixed board not refreshing on putPiece with controller.
-* Fixed onMove being called on invalid moves.
+* Upgraded to Dart <3.0.0

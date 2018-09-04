@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="made with love by dartdoc 0.20.1">
+  <meta name="description" content="flutter_chess_board API docs, for the Dart programming language.">
+  <title>flutter_chess_board - Dart API docs</title>
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link rel="stylesheet" href="static-assets/github.css">
+  <link rel="stylesheet" href="static-assets/styles.css">
+  <link rel="icon" href="static-assets/favicon.png">
+
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="https://www.github.com/deven98/flutter_chess_board">flutter_chess_board package</a></li>
+  </ol>
+  <div class="self-name">flutter_chess_board</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <h5><span class="package-name">flutter_chess_board</span> <span class="package-kind">package</span></h5>
+    <ol>
+          <li class="section-title">Libraries</li>
+          <li><a href="chess_board/chess_board-library.html">chess_board</a></li>
+    </ol>
+  </div>
+
+  <div class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <section class="desc markdown">
+        <h1>flutter_chess_board</h1>
+<p>A Chessboard Widget for Flutter. The widget maintains game state and gives callbacks for game events 
+like moves, checkmate and draws. This widget is still in active development.</p>
+<p><img alt="alt text" src="https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png"></p>
+<h3>Import the package</h3>
+<p>To use this package, <a href="https://pub.dartlang.org/packages/flutter_chess_board#-installing-tab-">add chess_board as a dependency</a> in your pubspec.yaml</p>
+<h3>Example</h3>
+<pre class="language-dart"><code>    import 'package:flutter/material.dart';
+    import 'package:flutter_chess_board/flutter_chess_board.dart';
+    
+    void main() {
+      runApp(
+        new MaterialApp(
+          home: new Scaffold(
+            body: new Center(
+              child: ChessBoard(
+                size: 200.0,
+                onMove: (move) {
+                  print(move);
+                },
+                onCheckMate: (color) {
+                  print(color);
+                },
+                onDraw: () {
+                  print("DRAW!");
+                },
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+</code></pre>
+<h2>Board parameters:</h2>
+<h3>size:</h3>
+<p>Gives length and width of chess board</p>
+<h3>onMove:</h3>
+<p>Callback for when a move is made. Returns a move as a string. E.g.: "Nf4"</p>
+<h3>onDraw:</h3>
+<p>Callback for when game becomes a draw.</p>
+<h3>onCheckMate:</h3>
+<p>Callback for when a player checkmates the other. Returns the color of the winner.</p>
+<h3>whiteSideTowardsUser:</h3>
+<p>Defines if white or black side faces user. The player is white by default(true). If 
+set to false, black faces the user.</p>
+<h3>controller</h3>
+<p>Defines the ChessBoardController for the widget for changing the board programmatically.</p>
+<h3>enableUserMoves</h3>
+<p>Disables user moves when set to false.</p>
+<h3>Getting Started</h3>
+<p>For help getting started with Flutter, view our online <a href="https://flutter.io/">documentation</a>.</p>
+<p>For help on editing package code, view the <a href="https://flutter.io/developing-packages/">documentation</a>.</p>
+      </section>
+      
+        <section class="summary">
+            <h2>Libraries</h2>
+          <dl>
+            <dt id="chess_board">
+              <span class="name"><a href="chess_board/chess_board-library.html">chess_board</a></span>
+            </dt>
+            <dd>
+              
+            </dd>          </dl>
+        </section>
+
+  </div> <!-- /.main-content -->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    flutter_chess_board 0.2.2
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/highlight.pack.js"></script>
+<script src="static-assets/URI.js"></script>
+<script src="static-assets/script.js"></script>
+
+
+</body>
+
+</html>
