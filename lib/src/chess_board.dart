@@ -87,6 +87,13 @@ var whiteSquareList = [
   ],
 ];
 
+enum BoardType {
+  brown,
+  darkBrown,
+  orange,
+  green,
+}
+
 class ChessBoard extends StatefulWidget {
   final double size;
 
@@ -102,14 +109,18 @@ class ChessBoard extends StatefulWidget {
 
   final bool enableUserMoves;
 
-  ChessBoard(
-      {this.size = 200.0,
-      this.whiteSideTowardsUser = true,
-      @required this.onMove,
-      @required this.onCheckMate,
-      @required this.onDraw,
-      this.chessBoardController,
-      this.enableUserMoves = true});
+  final BoardType boardType;
+
+  ChessBoard({
+    this.size = 200.0,
+    this.whiteSideTowardsUser = true,
+    @required this.onMove,
+    @required this.onCheckMate,
+    @required this.onDraw,
+    this.chessBoardController,
+    this.enableUserMoves = true,
+    this.boardType = BoardType.brown,
+  });
 
   @override
   _ChessBoardState createState() => _ChessBoardState();
@@ -136,10 +147,7 @@ class _ChessBoardState extends State<ChessBoard> {
             Container(
               height: widget.size,
               width: widget.size,
-              child: Image.asset(
-                "images/chess_board.png",
-                package: 'flutter_chess_board',
-              ),
+              child: _getBoardImage(),
             ),
             //Overlaying draggables/ dragTargets onto the squares
             Center(
@@ -169,5 +177,36 @@ class _ChessBoardState extends State<ChessBoard> {
               );
             }).toList(),
     );
+  }
+
+  Image _getBoardImage() {
+    switch (widget.boardType) {
+      case BoardType.brown:
+        return Image.asset(
+          "images/brown_board.png",
+          package: 'flutter_chess_board',
+          fit: BoxFit.cover,
+        );
+      case BoardType.darkBrown:
+        return Image.asset(
+          "images/dark_brown_board.png",
+          package: 'flutter_chess_board',
+          fit: BoxFit.cover,
+        );
+      case BoardType.green:
+        return Image.asset(
+          "images/green_board.png",
+          package: 'flutter_chess_board',
+          fit: BoxFit.cover,
+        );
+      case BoardType.orange:
+        return Image.asset(
+          "images/orange_board.png",
+          package: 'flutter_chess_board',
+          fit: BoxFit.cover,
+        );
+      default:
+        return null;
+    }
   }
 }

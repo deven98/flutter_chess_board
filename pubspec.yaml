@@ -32,6 +32,18 @@ flutter:
   #  - images/a_dot_ham.jpeg
   assets:
     - images/chess_board.png
+    - images/brown_board.png
+    - images/2.0x/brown_board.png
+    - images/3.0x/brown_board.png
+    - images/orange_board.png
+    - images/2.0x/orange_board.png
+    - images/3.0x/orange_board.png
+    - images/green_board.png
+    - images/2.0x/green_board.png
+    - images/3.0x/green_board.png
+    - images/dark_brown_board.png
+    - images/2.0x/dark_brown_board.png
+    - images/3.0x/dark_brown_board.png
   #
   # For details regarding assets in packages, see
   # https://flutter.io/assets-and-images/#from-packages
