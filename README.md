@@ -5,6 +5,10 @@ like moves, checkmate and draws. Under final testing before 1.0.
 
 ![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png)
 
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_2.png)
+
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_3.png)
+
 ### Import the package 
 
 To use this package, [add chess_board as a dependency](https://pub.dartlang.org/packages/flutter_chess_board#-installing-tab-) in your pubspec.yaml

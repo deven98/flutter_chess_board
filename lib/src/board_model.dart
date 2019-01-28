@@ -31,6 +31,11 @@ class BoardModel extends Model {
   /// Creates a logical game
   chess.Chess game = chess.Chess();
 
+  /// Refreshes board
+  void refreshBoard() {
+    notifyListeners();
+  }
+
   BoardModel(
       this.size,
       this.onMove,
@@ -38,10 +43,8 @@ class BoardModel extends Model {
       this.onDraw,
       this.whiteSideTowardsUser,
       this.chessBoardController,
-      this.enableUserMoves);
-
-  /// Refreshes board
-  void refreshBoard() {
-    notifyListeners();
+      this.enableUserMoves) {
+    chessBoardController?.game = game;
+    chessBoardController?.refreshBoard = refreshBoard;
   }
 }
