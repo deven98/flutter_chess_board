@@ -7,7 +7,6 @@ import 'package:chess/chess.dart' as chess;
 
 /// A single square on the chessboard
 class BoardSquare extends StatelessWidget {
-
   /// The square name (a2, d3, e4, etc.)
   final squareName;
 
@@ -21,15 +20,16 @@ class BoardSquare extends StatelessWidget {
         child: DragTarget(builder: (context, accepted, rejected) {
           return model.game.get(squareName) != null
               ? Draggable(
-            child: _getImageToDisplay(size: model.size / 8, model: model),
-            feedback: _getImageToDisplay(size: (1.2 * (model.size / 8)), model: model),
-            onDragCompleted: () {},
-            data: [
-              squareName,
-              model.game.get(squareName).type.toUpperCase(),
-              model.game.get(squareName).color,
-            ],
-          )
+                  child: _getImageToDisplay(size: model.size / 8, model: model),
+                  feedback: _getImageToDisplay(
+                      size: (1.2 * (model.size / 8)), model: model),
+                  onDragCompleted: () {},
+                  data: [
+                    squareName,
+                    model.game.get(squareName).type.toUpperCase(),
+                    model.game.get(squareName).color,
+                  ],
+                )
               : Container();
         }, onWillAccept: (willAccept) {
           return model.enableUserMoves ? true : false;
@@ -39,8 +39,8 @@ class BoardSquare extends StatelessWidget {
 
           if (moveInfo[1] == "P" &&
               ((moveInfo[0][1] == "7" &&
-                  squareName[1] == "8" &&
-                  moveInfo[2] == chess.Color.WHITE) ||
+                      squareName[1] == "8" &&
+                      moveInfo[2] == chess.Color.WHITE) ||
                   (moveInfo[0][1] == "2" &&
                       squareName[1] == "1" &&
                       moveInfo[2] == chess.Color.BLACK))) {
@@ -115,11 +115,11 @@ class BoardSquare extends StatelessWidget {
     }
 
     String piece = model.game
-        .get(squareName)
-        .color
-        .toString()
-        .substring(0, 1)
-        .toUpperCase() +
+            .get(squareName)
+            .color
+            .toString()
+            .substring(0, 1)
+            .toUpperCase() +
         model.game.get(squareName).type.toUpperCase();
 
     switch (piece) {

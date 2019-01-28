@@ -6,8 +6,7 @@ import 'package:chess/chess.dart' as chess;
 typedef Null MoveCallback(String moveNotation);
 typedef Null CheckMateCallback(String winColor);
 
-class BoardModel extends Model{
-
+class BoardModel extends Model {
   /// The size of the board (The board is a square)
   double size;
 
@@ -32,13 +31,17 @@ class BoardModel extends Model{
   /// Creates a logical game
   chess.Chess game = chess.Chess();
 
-  BoardModel(this.size, this.onMove, this.onCheckMate, this.onDraw,
-      this.whiteSideTowardsUser, this.chessBoardController,
+  BoardModel(
+      this.size,
+      this.onMove,
+      this.onCheckMate,
+      this.onDraw,
+      this.whiteSideTowardsUser,
+      this.chessBoardController,
       this.enableUserMoves);
 
   /// Refreshes board
   void refreshBoard() {
     notifyListeners();
   }
-
 }

@@ -39,21 +39,19 @@
     <h5>chess_board library</h5>
     <ol>
       <li class="section-title"><a href="chess_board/chess_board-library.html#classes">Classes</a></li>
-      <li><a href="chess_board/BoardSquare-class.html">BoardSquare</a></li>
       <li><a href="chess_board/ChessBoard-class.html">ChessBoard</a></li>
       <li><a href="chess_board/ChessBoardController-class.html">ChessBoardController</a></li>
-      <li><a href="chess_board/ChessBoardRank-class.html">ChessBoardRank</a></li>
     
     
+      <li class="section-title"><a href="chess_board/chess_board-library.html#properties">Properties</a></li>
+      <li><a href="chess_board/whiteSquareList.html">whiteSquareList</a></li>
     
     
       <li class="section-title"><a href="chess_board/chess_board-library.html#enums">Enums</a></li>
+      <li><a href="chess_board/BoardType-class.html">BoardType</a></li>
       <li><a href="chess_board/PieceColor-class.html">PieceColor</a></li>
       <li><a href="chess_board/PieceType-class.html">PieceType</a></li>
     
-      <li class="section-title"><a href="chess_board/chess_board-library.html#typedefs">Typedefs</a></li>
-      <li><a href="chess_board/CheckMateCallback.html">CheckMateCallback</a></li>
-      <li><a href="chess_board/MoveCallback.html">MoveCallback</a></li>
     
     </ol>
   </div>
@@ -61,6 +59,9 @@
   <div class="col-xs-12 col-sm-9 col-md-8 main-content">
     <h1>ChessBoardController class</h1>
 
+    <section class="desc markdown">
+      <p>Controller for programmatically controlling the board</p>
+    </section>
     
 
     <section class="summary offset-anchor" id="constructors">
@@ -85,7 +86,7 @@
           <span class="signature">&#8596; Chess</span>
         </dt>
         <dd>
-          
+          The game attached to the controller
           <div class="features">read / write</div>
 </dd>
         <dt id="refreshBoard" class="property">
@@ -93,7 +94,7 @@
           <span class="signature">&#8596; Function</span>
         </dt>
         <dd>
-          
+          Function from the ScopedModel to refresh board
           <div class="features">read / write</div>
 </dd>
         <dt id="hashCode" class="property inherited">
@@ -124,7 +125,16 @@
           </span>
         </dt>
         <dd>
+          Clears board
           
+</dd>
+        <dt id="loadPGN" class="callable">
+          <span class="name"><a href="chess_board/ChessBoardController/loadPGN.html">loadPGN</a></span><span class="signature">(<wbr><span class="parameter" id="loadPGN-param-pgn"><span class="type-annotation">String</span> <span class="parameter-name">pgn</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+        </dt>
+        <dd>
+          Loads a PGN
           
 </dd>
         <dt id="makeMove" class="callable">
@@ -133,7 +143,7 @@
           </span>
         </dt>
         <dd>
-          
+          Makes move on the board
           
 </dd>
         <dt id="makeMoveWithPromotion" class="callable">
@@ -142,7 +152,8 @@
           </span>
         </dt>
         <dd>
-          
+          Makes move and promotes pawn to piece (from is a square like d4, to is also a square like e3, pieceToPromoteTo is a String like "Q".
+pieceToPromoteTo String will be changed to enum in a future update and this method will be deprecated in the future
           
 </dd>
         <dt id="putPiece" class="callable">
@@ -151,7 +162,7 @@
           </span>
         </dt>
         <dd>
-          
+          Puts piece on a square
           
 </dd>
         <dt id="resetBoard" class="callable">
@@ -160,7 +171,7 @@
           </span>
         </dt>
         <dd>
-          
+          Resets square
           
 </dd>
         <dt id="noSuchMethod" class="callable inherited">
@@ -219,6 +230,7 @@
     
       <li class="section-title"><a href="chess_board/ChessBoardController-class.html#instance-methods">Methods</a></li>
       <li><a href="chess_board/ChessBoardController/clearBoard.html">clearBoard</a></li>
+      <li><a href="chess_board/ChessBoardController/loadPGN.html">loadPGN</a></li>
       <li><a href="chess_board/ChessBoardController/makeMove.html">makeMove</a></li>
       <li><a href="chess_board/ChessBoardController/makeMoveWithPromotion.html">makeMoveWithPromotion</a></li>
       <li><a href="chess_board/ChessBoardController/putPiece.html">putPiece</a></li>
@@ -238,7 +250,7 @@
 
 <footer>
   <span class="no-break">
-    flutter_chess_board 0.2.2
+    flutter_chess_board 0.9.0
   </span>
 
 </footer>

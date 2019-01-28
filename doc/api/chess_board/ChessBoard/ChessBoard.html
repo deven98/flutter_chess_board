@@ -45,6 +45,7 @@
       <li class="section-title">
         <a href="chess_board/ChessBoard-class.html#instance-properties">Properties</a>
       </li>
+      <li><a href="chess_board/ChessBoard/boardType.html">boardType</a></li>
       <li><a href="chess_board/ChessBoard/chessBoardController.html">chessBoardController</a></li>
       <li><a href="chess_board/ChessBoard/enableUserMoves.html">enableUserMoves</a></li>
       <li><a href="chess_board/ChessBoard/onCheckMate.html">onCheckMate</a></li>
@@ -59,13 +60,9 @@
       <li class="section-title"><a href="chess_board/ChessBoard-class.html#instance-methods">Methods</a></li>
       <li><a href="chess_board/ChessBoard/createState.html">createState</a></li>
       <li class="inherited"><a href="chess_board/ChessBoard/createElement.html">createElement</a></li>
-      <li class="inherited"><a href="chess_board/ChessBoard/debugDescribeChildren.html">debugDescribeChildren</a></li>
       <li class="inherited"><a href="chess_board/ChessBoard/debugFillProperties.html">debugFillProperties</a></li>
       <li class="inherited"><a href="chess_board/ChessBoard/noSuchMethod.html">noSuchMethod</a></li>
-      <li class="inherited"><a href="chess_board/ChessBoard/toDiagnosticsNode.html">toDiagnosticsNode</a></li>
       <li class="inherited"><a href="chess_board/ChessBoard/toString.html">toString</a></li>
-      <li class="inherited"><a href="chess_board/ChessBoard/toStringDeep.html">toStringDeep</a></li>
-      <li class="inherited"><a href="chess_board/ChessBoard/toStringShallow.html">toStringShallow</a></li>
       <li class="inherited"><a href="chess_board/ChessBoard/toStringShort.html">toStringShort</a></li>
     
       <li class="section-title inherited"><a href="chess_board/ChessBoard-class.html#operators">Operators</a></li>
@@ -81,20 +78,22 @@
 
     <section class="multi-line-signature">
       
-      <span class="name ">ChessBoard</span>(<wbr>{<span class="parameter" id="-param-size"><span class="type-annotation">dynamic</span> <span class="parameter-name">size</span>: <span class="default-value">200.0</span>, </span> <span class="parameter" id="-param-whiteSideTowardsUser"><span class="type-annotation">bool</span> <span class="parameter-name">whiteSideTowardsUser</span>: <span class="default-value">true</span>, </span> <span class="parameter" id="-param-onMove"><span>@required</span> <span class="type-annotation"><a href="chess_board/MoveCallback.html">MoveCallback</a></span> <span class="parameter-name">onMove</span>, </span> <span class="parameter" id="-param-onCheckMate"><span>@required</span> <span class="type-annotation"><a href="chess_board/CheckMateCallback.html">CheckMateCallback</a></span> <span class="parameter-name">onCheckMate</span>, </span> <span class="parameter" id="-param-onDraw"><span>@required</span> <span class="type-annotation">VoidCallback</span> <span class="parameter-name">onDraw</span>, </span> <span class="parameter" id="-param-chessBoardController"><span class="type-annotation"><a href="chess_board/ChessBoardController-class.html">ChessBoardController</a></span> <span class="parameter-name">chessBoardController</span>, </span> <span class="parameter" id="-param-enableUserMoves"><span class="type-annotation">bool</span> <span class="parameter-name">enableUserMoves</span>: <span class="default-value">true</span></span> })
+      <span class="name ">ChessBoard</span>(<wbr>{<span class="parameter" id="-param-size"><span class="type-annotation">double</span> <span class="parameter-name">size</span>: <span class="default-value">200.0</span>, </span> <span class="parameter" id="-param-whiteSideTowardsUser"><span class="type-annotation">bool</span> <span class="parameter-name">whiteSideTowardsUser</span>: <span class="default-value">true</span>, </span> <span class="parameter" id="-param-onMove"><span>@required</span> <span class="type-annotation">MoveCallback</span> <span class="parameter-name">onMove</span>, </span> <span class="parameter" id="-param-onCheckMate"><span>@required</span> <span class="type-annotation">CheckMateCallback</span> <span class="parameter-name">onCheckMate</span>, </span> <span class="parameter" id="-param-onDraw"><span>@required</span> <span class="type-annotation">VoidCallback</span> <span class="parameter-name">onDraw</span>, </span> <span class="parameter" id="-param-chessBoardController"><span class="type-annotation"><a href="chess_board/ChessBoardController-class.html">ChessBoardController</a></span> <span class="parameter-name">chessBoardController</span>, </span> <span class="parameter" id="-param-enableUserMoves"><span class="type-annotation">bool</span> <span class="parameter-name">enableUserMoves</span>: <span class="default-value">true</span>, </span> <span class="parameter" id="-param-boardType"><span class="type-annotation"><a href="chess_board/BoardType-class.html">BoardType</a></span> <span class="parameter-name">boardType</span>: <span class="default-value">BoardType.brown</span></span> })
     </section>
 
     
     <section class="summary source-code" id="source">
       <h2><span>Implementation</span> </h2>
-      <pre class="language-dart"><code class="language-dart">ChessBoard(
-    {this.size = 200.0,
-    this.whiteSideTowardsUser = true,
-    @required this.onMove,
-    @required this.onCheckMate,
-    @required this.onDraw,
-    this.chessBoardController,
-    this.enableUserMoves = true});</code></pre>
+      <pre class="language-dart"><code class="language-dart">ChessBoard({
+  this.size = 200.0,
+  this.whiteSideTowardsUser = true,
+  @required this.onMove,
+  @required this.onCheckMate,
+  @required this.onDraw,
+  this.chessBoardController,
+  this.enableUserMoves = true,
+  this.boardType = BoardType.brown,
+});</code></pre>
     </section>
 
   </div> <!-- /.main-content -->
@@ -106,7 +105,7 @@
 
 <footer>
   <span class="no-break">
-    flutter_chess_board 0.2.2
+    flutter_chess_board 0.9.0
   </span>
 
 </footer>

@@ -97,7 +97,6 @@ enum BoardType {
 
 /// The Chessboard Widget
 class ChessBoard extends StatefulWidget {
-
   /// Size of chessboard
   final double size;
 

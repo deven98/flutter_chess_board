@@ -1,4 +1,3 @@
-
 import 'package:chess/chess.dart' as chess;
 
 enum PieceType { Pawn, Rook, Knight, Bishop, Queen, King }
@@ -10,7 +9,6 @@ enum PieceColor {
 
 /// Controller for programmatically controlling the board
 class ChessBoardController {
-
   /// The game attached to the controller
   chess.Chess game;
 
