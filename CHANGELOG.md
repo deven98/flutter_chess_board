@@ -1,3 +1,4 @@
-## [0.2.3] - 26/08/2018.
+## [0.9.0] - 28/01/2019.
 
-* Upgraded to Dart <3.0.0
+* Added board colors
+* Changed architecture to ScopedModel

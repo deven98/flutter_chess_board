@@ -5,7 +5,10 @@ import 'dart:async';
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:chess/chess.dart' as chess;
 
+/// A single square on the chessboard
 class BoardSquare extends StatelessWidget {
+
+  /// The square name (a2, d3, e4, etc.)
   final squareName;
 
   BoardSquare({this.squareName});
@@ -59,6 +62,7 @@ class BoardSquare extends StatelessWidget {
     });
   }
 
+  /// Show dialog when pawn reaches last square
   Future<String> _promotionDialog(BuildContext context) async {
     return showDialog<String>(
       context: context,
@@ -102,6 +106,7 @@ class BoardSquare extends StatelessWidget {
     });
   }
 
+  /// Get image to display on square
   Widget _getImageToDisplay({double size, BoardModel model}) {
     Widget imageToDisplay = Container();
 

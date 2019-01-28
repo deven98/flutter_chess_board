@@ -87,6 +87,7 @@ var whiteSquareList = [
   ],
 ];
 
+/// Enum which stores board types
 enum BoardType {
   brown,
   darkBrown,
@@ -94,21 +95,31 @@ enum BoardType {
   green,
 }
 
+/// The Chessboard Widget
 class ChessBoard extends StatefulWidget {
+
+  /// Size of chessboard
   final double size;
 
+  /// Callback for when move is made
   final MoveCallback onMove;
 
+  /// Callback for when a player is checkmated
   final CheckMateCallback onCheckMate;
 
+  /// Callback for when the game is a draw
   final VoidCallback onDraw;
 
+  /// A boolean which notes if white board side is towards users
   final bool whiteSideTowardsUser;
 
+  /// A controller to programmatically control the chess board
   final ChessBoardController chessBoardController;
 
+  /// A boolean which checks if the user should be allowed to make moves
   final bool enableUserMoves;
 
+  /// The color type of the board
   final BoardType boardType;
 
   ChessBoard({
@@ -163,6 +174,7 @@ class _ChessBoardState extends State<ChessBoard> {
     );
   }
 
+  /// Builds the board
   Widget buildChessBoard() {
     return Column(
       children: widget.whiteSideTowardsUser
@@ -179,6 +191,7 @@ class _ChessBoardState extends State<ChessBoard> {
     );
   }
 
+  /// Returns the board image
   Image _getBoardImage() {
     switch (widget.boardType) {
       case BoardType.brown:

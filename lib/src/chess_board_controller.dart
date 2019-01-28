@@ -8,44 +8,58 @@ enum PieceColor {
   Black,
 }
 
+/// Controller for programmatically controlling the board
 class ChessBoardController {
+
+  /// The game attached to the controller
   chess.Chess game;
+
+  /// Function from the ScopedModel to refresh board
   Function refreshBoard;
 
+  /// Makes move on the board
   void makeMove(String from, String to) {
     game?.move({"from": from, "to": to});
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  /// Makes move and promotes pawn to piece (from is a square like d4, to is also a square like e3, pieceToPromoteTo is a String like "Q".
+  /// pieceToPromoteTo String will be changed to enum in a future update and this method will be deprecated in the future
   void makeMoveWithPromotion(String from, String to, String pieceToPromoteTo) {
     game?.move({"from": from, "to": to, "promotion": pieceToPromoteTo});
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  /// Resets square
   void resetBoard() {
     game?.reset();
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  /// Clears board
   void clearBoard() {
     game?.clear();
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  /// Puts piece on a square
   void putPiece(PieceType piece, String square, PieceColor color) {
     game?.put(_getPiece(piece, color), square);
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  /// Loads a PGN
   void loadPGN(String pgn) {
     game.load_pgn(pgn);
     refreshBoard == null ? this._throwNotAttachedException() : refreshBoard();
   }
 
+  /// Exception when a controller is not attached to a board
   void _throwNotAttachedException() {
     throw Exception("Controller not attached to a ChessBoard widget!");
   }
 
+  /// Gets respective piece
   chess.Piece _getPiece(PieceType piece, PieceColor color) {
     chess.Color _getColor(PieceColor color) {
       return color == PieceColor.White ? chess.Color.WHITE : chess.Color.BLACK;
