@@ -43,6 +43,10 @@ To use this package, [add chess_board as a dependency](https://pub.dartlang.org/
 
 Gives length and width of chess board
 
+### boardType:
+
+Type of board to display (Brown, Green, etc.)
+
 ### onMove:
 
 Callback for when a move is made. Returns a move as a string. E.g.: "Nf4"
