@@ -1,11 +1,12 @@
 import 'dart:ui';
+import 'package:flutter_chess_board/flutter_chess_board.dart';
 import 'package:flutter_chess_board/src/chess_board_controller.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:chess/chess.dart' as chess;
 
 typedef Null MoveCallback(String moveNotation);
-typedef Null CheckMateCallback(bool isWhiteCheckmate);
-typedef Null CheckCallback(bool isWhiteInCheck);
+typedef Null CheckMateCallback(PieceColor color);
+typedef Null CheckCallback(PieceColor color);
 
 class BoardModel extends Model {
   /// The size of the board (The board is a square)
@@ -38,13 +39,13 @@ class BoardModel extends Model {
   /// Refreshes board
   void refreshBoard() {
     if (game.in_checkmate) {
-      onCheckMate(game.turn == chess.Color.WHITE);
+      onCheckMate(game.turn == chess.Color.WHITE ? PieceColor.White : PieceColor.Black);
     }
     else if (game.in_draw || game.in_stalemate || game.in_threefold_repetition || game.insufficient_material) {
       onDraw();    
     }
     else if (game.in_check) {
-      onCheck(game.turn == chess.Color.WHITE);
+      onCheck(game.turn == chess.Color.WHITE ? PieceColor.White : PieceColor.Black);
     }
     notifyListeners();
   }
