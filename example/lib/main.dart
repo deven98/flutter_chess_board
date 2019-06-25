@@ -35,8 +35,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onMove: (move) {
                 print(move);
               },
-              onCheckMate: (color) {
-                print(color);
+              onCheck: (isWhiteChecked) {
+                print(isWhiteChecked);
+              },
+              onCheckMate: (isWhiteCheckmate) {
+                print(isWhiteCheckmate);
               },
               onDraw: () {},
               size: MediaQuery.of(context).size.width,
