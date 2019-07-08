@@ -35,6 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onMove: (move) {
                 print(move);
               },
+              onCheck: (color) {
+                print(color);
+              },
               onCheckMate: (color) {
                 print(color);
               },

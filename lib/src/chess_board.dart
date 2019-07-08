@@ -106,6 +106,9 @@ class ChessBoard extends StatefulWidget {
   /// Callback for when a player is checkmated
   final CheckMateCallback onCheckMate;
 
+  /// Callback for when a player is in check
+  final CheckCallback onCheck;
+
   /// Callback for when the game is a draw
   final VoidCallback onDraw;
 
@@ -126,6 +129,7 @@ class ChessBoard extends StatefulWidget {
     this.whiteSideTowardsUser = true,
     @required this.onMove,
     @required this.onCheckMate,
+    @required this.onCheck,
     @required this.onDraw,
     this.chessBoardController,
     this.enableUserMoves = true,
@@ -144,6 +148,7 @@ class _ChessBoardState extends State<ChessBoard> {
         widget.size,
         widget.onMove,
         widget.onCheckMate,
+        widget.onCheck,
         widget.onDraw,
         widget.whiteSideTowardsUser,
         widget.chessBoardController,
