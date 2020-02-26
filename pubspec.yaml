@@ -1,6 +1,6 @@
 name: flutter_chess_board
 description: A Chessboard Widget for Flutter. The widget also maintains game state and gives callbacks for game events.
-version: 0.9.4
+version: 0.9.5
 author: Deven Joshi <deven9852@gmail.com>
 
 homepage: https://www.github.com/deven98/flutter_chess_board
