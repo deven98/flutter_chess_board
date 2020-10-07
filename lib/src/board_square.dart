@@ -47,14 +47,14 @@ class BoardSquare extends StatelessWidget {
             _promotionDialog(context).then((value) {
               model.game.move(
                   {"from": moveInfo[0], "to": squareName, "promotion": value});
+              model.onMove(moveInfo[0]+squareName+value);
               model.refreshBoard();
             });
           } else {
             model.game.move({"from": moveInfo[0], "to": squareName});
           }
           if (model.game.turn != moveColor) {
-            model.onMove(
-                moveInfo[1] == "P" ? squareName : moveInfo[1] + squareName);
+            model.onMove(moveInfo[0]+squareName);
           }
           model.refreshBoard();
         }),
