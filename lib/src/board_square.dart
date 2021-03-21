@@ -117,7 +117,6 @@ class BoardSquare extends StatelessWidget {
     String piece =
         (model.game.get(squareName).color == chess.Color.WHITE ? 'W' : 'B') +
             model.game.get(squareName).type.toUpperCase();
-    print(piece);
 
     switch (piece) {
       case "WP":
