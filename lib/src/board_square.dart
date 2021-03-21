@@ -114,13 +114,10 @@ class BoardSquare extends StatelessWidget {
       return Container();
     }
 
-    String piece = model.game
-            .get(squareName)
-            .color
-            .toString()
-            .substring(0, 1)
-            .toUpperCase() +
-        model.game.get(squareName).type.toUpperCase();
+    String piece =
+        (model.game.get(squareName).color == chess.Color.WHITE ? 'W' : 'B') +
+            model.game.get(squareName).type.toUpperCase();
+    print(piece);
 
     switch (piece) {
       case "WP":
