@@ -1,3 +1,3 @@
-## [0.9.6] - 21/03/2021.
+## [0.9.7] - 26/04/2021.
 
-* Fix for onMove on promotions 
+* Added makeMove with SAN notation 
