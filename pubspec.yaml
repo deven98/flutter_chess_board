@@ -4,7 +4,7 @@ version: 0.9.7
 repository: https://www.github.com/deven98/flutter_chess_board
 
 dependencies:
-  chess: ^0.6.6
+  chess: ^0.7.0
   chess_vectors_flutter: ^1.0.12
   scoped_model: ^1.1.0
 
@@ -12,7 +12,7 @@ dependencies:
     sdk: flutter
 
 environment:
-    sdk: ">2.0.0 <3.0.0"
+    sdk: ">2.12.0 <3.0.0"
 
 dev_dependencies:
   flutter_test:
