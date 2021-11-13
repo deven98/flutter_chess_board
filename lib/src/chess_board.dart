@@ -133,15 +133,18 @@ class _ChessBoardState extends State<ChessBoard> {
                   },
                   itemCount: 64,
                   shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
                 ),
               ),
               if (widget.arrows.isNotEmpty)
-                AspectRatio(
-                  aspectRatio: 1.0,
-                  child: CustomPaint(
-                    child: Container(),
-                    painter:
-                        _ArrowPainter(widget.arrows, widget.boardOrientation),
+                IgnorePointer(
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: CustomPaint(
+                      child: Container(),
+                      painter:
+                          _ArrowPainter(widget.arrows, widget.boardOrientation),
+                    ),
                   ),
                 ),
             ],
