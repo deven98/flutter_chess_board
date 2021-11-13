@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
-import 'package:flutter/material.dart' hide Color;
+import 'package:flutter/material.dart';
 import 'package:chess/chess.dart' hide State;
+import 'board_arrow.dart';
 import 'chess_board_controller.dart';
 import 'constants.dart';
 
@@ -308,24 +311,6 @@ class PieceMoveData {
   });
 }
 
-class BoardArrow {
-  final String from;
-  final String to;
-
-  BoardArrow({required this.from, required this.to})
-      : assert(from.length == 2 && to.length == 2),
-        assert(squareRegex.hasMatch(from)),
-        assert(squareRegex.hasMatch(to));
-
-  @override
-  bool operator ==(Object other) {
-    return other is BoardArrow && from == other.from && to == other.to;
-  }
-
-  @override
-  int get hashCode => from.hashCode * to.hashCode;
-}
-
 class _ArrowPainter extends CustomPainter {
   List<BoardArrow> arrows;
   PlayerColor boardOrientation;
@@ -367,9 +352,53 @@ class _ArrowPainter extends CustomPainter {
           ((effectiveColumnEnd + 1) * blockSize) - halfBlockSize,
           ((effectiveRowEnd + 1) * blockSize) - halfBlockSize);
 
-      canvas.drawLine(startOffset, endOffset,
-          Paint()..strokeWidth = halfBlockSize * 0.8..color = Colors.black.withOpacity(0.5));
+      var yDist = 0.8 * (endOffset.dy - startOffset.dy);
+      var xDist = 0.8 * (endOffset.dx - startOffset.dx);
+
+      var paint = Paint()
+        ..strokeWidth = halfBlockSize * 0.8
+        ..color = arrow.color;
+
+      canvas.drawLine(startOffset,
+          Offset(startOffset.dx + xDist, startOffset.dy + yDist), paint);
+
+      var slope =
+          (endOffset.dy - startOffset.dy) / (endOffset.dx - startOffset.dx);
+
+      var newLineSlope = -1 / slope;
+
+      var points = _getNewPoints(
+          Offset(startOffset.dx + xDist, startOffset.dy + yDist),
+          newLineSlope,
+          halfBlockSize);
+      var newPoint1 = points[0];
+      var newPoint2 = points[1];
+
+      var path = Path();
+
+      path.moveTo(endOffset.dx, endOffset.dy);
+      path.lineTo(newPoint1.dx, newPoint1.dy);
+      path.lineTo(newPoint2.dx, newPoint2.dy);
+      path.close();
+
+      canvas.drawPath(path, paint);
     }
+  }
+
+  List<Offset> _getNewPoints(Offset start, double slope, double length) {
+    if (slope == double.infinity || slope == double.negativeInfinity) {
+      return [
+        Offset(start.dx, start.dy + length),
+        Offset(start.dx, start.dy - length)
+      ];
+    }
+
+    return [
+      Offset(start.dx + (length / sqrt(1 + (slope * slope))),
+          start.dy + ((length * slope) / sqrt(1 + (slope * slope)))),
+      Offset(start.dx - (length / sqrt(1 + (slope * slope))),
+          start.dy - ((length * slope) / sqrt(1 + (slope * slope)))),
+    ];
   }
 
   @override
