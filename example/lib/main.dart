@@ -33,11 +33,33 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Chess Demo'),),
-      body: Center(
-        child: ChessBoard(
-          controller: controller,
-        ),
+      appBar: AppBar(
+        title: const Text('Chess Demo'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: ChessBoard(
+                controller: controller,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ValueListenableBuilder<Chess>(
+              valueListenable: controller,
+              builder: (context, game, _) {
+                return Text(
+                  controller.getSan().fold(
+                        '',
+                        (previousValue, element) =>
+                            previousValue + '\n' + (element ?? ''),
+                      ),
+                );
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
