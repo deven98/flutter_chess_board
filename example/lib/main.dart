@@ -42,6 +42,13 @@ class _HomePageState extends State<HomePage> {
             child: Center(
               child: ChessBoard(
                 controller: controller,
+                arrows: [
+                  BoardArrow(
+                    from: 'b1',
+                    to: 'e5',
+                  ),
+                ],
+                boardOrientation: PlayerColor.black,
               ),
             ),
           ),
