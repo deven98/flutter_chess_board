@@ -3,6 +3,8 @@
 A Chessboard Widget for Flutter. The widget maintains game state and gives callbacks for game events 
 like moves, checkmate and draws. Under final testing before 1.0.
 
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_4.png)
+
 ![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png)
 
 ![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_2.png)
@@ -15,66 +17,64 @@ To use this package, [add chess_board as a dependency](https://pub.dartlang.org/
 
 ### Example
 
-        import 'package:flutter/material.dart';
-        import 'package:flutter_chess_board/flutter_chess_board.dart';
+```
+import 'package:flutter/material.dart';
+import 'package:flutter_chess_board/flutter_chess_board.dart';
         
-        void main() {
-          runApp(
-            new MaterialApp(
-              home: new Scaffold(
-                body: new Center(
-                  child: ChessBoard(
-                    size: 200.0,
-                    onMove: (move) {
-                      print(move);
-                    },
-                    onCheckMate: (color) {
-                      print(color);
-                    },
-                    onDraw: () {
-                      print("DRAW!");
-                    },
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  ChessBoardController controller = ChessBoardController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Chess Demo'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: ChessBoard(
+                controller: controller,
+                boardColor: BoardColor.orange,
+                arrows: [
+                  BoardArrow(
+                    from: 'd2',
+                    to: 'd4',
+                    color: Colors.red.withOpacity(0.5),
                   ),
-                ),
+                ],
+                boardOrientation: PlayerColor.white,
               ),
             ),
-          );
-        }
-
-## Board parameters:
-
-### size: 
-
-Gives length and width of chess board
-
-### boardType:
-
-Type of board to display (Brown, Green, etc.)
-
-### onMove:
-
-Callback for when a move is made. Returns a move as a string. E.g.: "Nf4"
-
-### onDraw:
-
-Callback for when game becomes a draw.
-
-### onCheckMate: 
-
-Callback for when a player checkmates the other. Returns the color of the winner.
-
-### whiteSideTowardsUser:
-
-Defines if white or black side faces user. The player is white by default(true). If 
-set to false, black faces the user.
-
-### controller
-
-Defines the ChessBoardController for the widget for changing the board programmatically.
-
-### enableUserMoves
-
-Disables user moves when set to false.
+          ),
+          Expanded(
+            child: ValueListenableBuilder<Chess>(
+              valueListenable: controller,
+              builder: (context, game, _) {
+                return Text(
+                  controller.getSan().fold(
+                        '',
+                        (previousValue, element) =>
+                            previousValue + '\n' + (element ?? ''),
+                      ),
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+```
 
 ### Getting Started
 

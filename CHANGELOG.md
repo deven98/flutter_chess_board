@@ -1,3 +1,7 @@
-## [0.9.7] - 26/04/2021.
+## [1.0.0] - 14/11/2021.
 
-* Added makeMove with SAN notation 
+* Added full null safety
+* Major refactor
+* Added new controller architecture
+* Removed scoped_model
+* Added capability to add arrows

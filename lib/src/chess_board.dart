@@ -1,229 +1,408 @@
+import 'dart:math';
+
+import 'package:chess_vectors_flutter/chess_vectors_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_chess_board/src/board_model.dart';
-import 'package:flutter_chess_board/src/board_rank.dart';
-import 'package:scoped_model/scoped_model.dart';
+import 'package:chess/chess.dart' hide State;
+import 'board_arrow.dart';
 import 'chess_board_controller.dart';
+import 'constants.dart';
 
-var whiteSquareList = [
-  [
-    "a8",
-    "b8",
-    "c8",
-    "d8",
-    "e8",
-    "f8",
-    "g8",
-    "h8",
-  ],
-  [
-    "a7",
-    "b7",
-    "c7",
-    "d7",
-    "e7",
-    "f7",
-    "g7",
-    "h7",
-  ],
-  [
-    "a6",
-    "b6",
-    "c6",
-    "d6",
-    "e6",
-    "f6",
-    "g6",
-    "h6",
-  ],
-  [
-    "a5",
-    "b5",
-    "c5",
-    "d5",
-    "e5",
-    "f5",
-    "g5",
-    "h5",
-  ],
-  [
-    "a4",
-    "b4",
-    "c4",
-    "d4",
-    "e4",
-    "f4",
-    "g4",
-    "h4",
-  ],
-  [
-    "a3",
-    "b3",
-    "c3",
-    "d3",
-    "e3",
-    "f3",
-    "g3",
-    "h3",
-  ],
-  [
-    "a2",
-    "b2",
-    "c2",
-    "d2",
-    "e2",
-    "f2",
-    "g2",
-    "h2",
-  ],
-  [
-    "a1",
-    "b1",
-    "c1",
-    "d1",
-    "e1",
-    "f1",
-    "g1",
-    "h1",
-  ],
-];
-
-/// Enum which stores board types
-enum BoardType {
-  brown,
-  darkBrown,
-  orange,
-  green,
-}
-
-/// The Chessboard Widget
 class ChessBoard extends StatefulWidget {
+  /// An instance of [ChessBoardController] which holds the game and allows
+  /// manipulating the board programmatically.
+  final ChessBoardController controller;
+
   /// Size of chessboard
-  final double size;
-
-  /// Callback for when move is made
-  final MoveCallback onMove;
-
-  /// Callback for when a player is checkmated
-  final CheckMateCallback onCheckMate;
-
-  /// Callback for when a player is in check
-  final CheckCallback onCheck;
-
-  /// Callback for when the game is a draw
-  final VoidCallback onDraw;
-
-  /// A boolean which notes if white board side is towards users
-  final bool whiteSideTowardsUser;
-
-  /// A controller to programmatically control the chess board
-  final ChessBoardController chessBoardController;
+  final double? size;
 
   /// A boolean which checks if the user should be allowed to make moves
   final bool enableUserMoves;
 
   /// The color type of the board
-  final BoardType boardType;
+  final BoardColor boardColor;
 
-  ChessBoard({
-    this.size = 200.0,
-    this.whiteSideTowardsUser = true,
-    @required this.onMove,
-    @required this.onCheckMate,
-    @required this.onCheck,
-    @required this.onDraw,
-    this.chessBoardController,
+  final PlayerColor boardOrientation;
+
+  final VoidCallback? onMove;
+
+  final List<BoardArrow> arrows;
+
+  const ChessBoard({
+    Key? key,
+    required this.controller,
+    this.size,
     this.enableUserMoves = true,
-    this.boardType = BoardType.brown,
-  });
+    this.boardColor = BoardColor.brown,
+    this.boardOrientation = PlayerColor.white,
+    this.onMove,
+    this.arrows = const [],
+  }) : super(key: key);
 
   @override
-  _ChessBoardState createState() => _ChessBoardState();
+  State<ChessBoard> createState() => _ChessBoardState();
 }
 
 class _ChessBoardState extends State<ChessBoard> {
   @override
   Widget build(BuildContext context) {
-    return ScopedModel(
-      model: BoardModel(
-        widget.size,
-        widget.onMove,
-        widget.onCheckMate,
-        widget.onCheck,
-        widget.onDraw,
-        widget.whiteSideTowardsUser,
-        widget.chessBoardController,
-        widget.enableUserMoves,
-      ),
-      child: Container(
-        height: widget.size,
-        width: widget.size,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              height: widget.size,
-              width: widget.size,
-              child: _getBoardImage(),
-            ),
-            //Overlaying draggables/ dragTargets onto the squares
-            Center(
-              child: Container(
-                height: widget.size,
-                width: widget.size,
-                child: buildChessBoard(),
+    return ValueListenableBuilder<Chess>(
+      valueListenable: widget.controller,
+      builder: (context, game, _) {
+        return SizedBox(
+          width: widget.size,
+          height: widget.size,
+          child: Stack(
+            children: [
+              AspectRatio(
+                child: _getBoardImage(widget.boardColor),
+                aspectRatio: 1.0,
               ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+              AspectRatio(
+                aspectRatio: 1.0,
+                child: GridView.builder(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 8),
+                  itemBuilder: (context, index) {
+                    var row = index ~/ 8;
+                    var column = index % 8;
+                    var boardRank = widget.boardOrientation == PlayerColor.black
+                        ? '${row + 1}'
+                        : '${(7 - row) + 1}';
+                    var boardFile = widget.boardOrientation == PlayerColor.white
+                        ? '${files[column]}'
+                        : '${files[7 - column]}';
 
-  /// Builds the board
-  Widget buildChessBoard() {
-    return Column(
-      children: widget.whiteSideTowardsUser
-          ? whiteSquareList.map((row) {
-              return ChessBoardRank(
-                children: row,
-              );
-            }).toList()
-          : whiteSquareList.reversed.map((row) {
-              return ChessBoardRank(
-                children: row.reversed.toList(),
-              );
-            }).toList(),
+                    var squareName = '$boardFile$boardRank';
+                    var pieceOnSquare = game.get(squareName);
+
+                    var piece = BoardPiece(
+                      squareName: squareName,
+                      game: game,
+                    );
+
+                    var draggable = game.get(squareName) != null
+                        ? Draggable<PieceMoveData>(
+                            child: piece,
+                            feedback: piece,
+                            childWhenDragging: SizedBox(),
+                            data: PieceMoveData(
+                              squareName: squareName,
+                              pieceType:
+                                  pieceOnSquare?.type.toUpperCase() ?? 'P',
+                              pieceColor: pieceOnSquare?.color ?? Color.WHITE,
+                            ),
+                          )
+                        : Container();
+
+                    var dragTarget =
+                        DragTarget<PieceMoveData>(builder: (context, list, _) {
+                      return draggable;
+                    }, onWillAccept: (pieceMoveData) {
+                      return widget.enableUserMoves ? true : false;
+                    }, onAccept: (PieceMoveData pieceMoveData) async {
+                      // A way to check if move occurred.
+                      Color moveColor = game.turn;
+
+                      if (pieceMoveData.pieceType == "P" &&
+                          ((pieceMoveData.squareName[1] == "7" &&
+                                  squareName[1] == "8" &&
+                                  pieceMoveData.pieceColor == Color.WHITE) ||
+                              (pieceMoveData.squareName[1] == "2" &&
+                                  squareName[1] == "1" &&
+                                  pieceMoveData.pieceColor == Color.BLACK))) {
+                        var val = await _promotionDialog(context);
+
+                        if (val != null) {
+                          widget.controller.makeMoveWithPromotion(
+                            from: pieceMoveData.squareName,
+                            to: squareName,
+                            pieceToPromoteTo: val,
+                          );
+                        } else {
+                          return;
+                        }
+                      } else {
+                        widget.controller.makeMove(
+                          from: pieceMoveData.squareName,
+                          to: squareName,
+                        );
+                      }
+                      if (game.turn != moveColor) {
+                        widget.onMove?.call();
+                      }
+                    });
+
+                    return dragTarget;
+                  },
+                  itemCount: 64,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                ),
+              ),
+              if (widget.arrows.isNotEmpty)
+                IgnorePointer(
+                  child: AspectRatio(
+                    aspectRatio: 1.0,
+                    child: CustomPaint(
+                      child: Container(),
+                      painter:
+                          _ArrowPainter(widget.arrows, widget.boardOrientation),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        );
+      },
     );
   }
 
   /// Returns the board image
-  Image _getBoardImage() {
-    switch (widget.boardType) {
-      case BoardType.brown:
+  Image _getBoardImage(BoardColor color) {
+    switch (color) {
+      case BoardColor.brown:
         return Image.asset(
           "images/brown_board.png",
           package: 'flutter_chess_board',
           fit: BoxFit.cover,
         );
-      case BoardType.darkBrown:
+      case BoardColor.darkBrown:
         return Image.asset(
           "images/dark_brown_board.png",
           package: 'flutter_chess_board',
           fit: BoxFit.cover,
         );
-      case BoardType.green:
+      case BoardColor.green:
         return Image.asset(
           "images/green_board.png",
           package: 'flutter_chess_board',
           fit: BoxFit.cover,
         );
-      case BoardType.orange:
+      case BoardColor.orange:
         return Image.asset(
           "images/orange_board.png",
           package: 'flutter_chess_board',
           fit: BoxFit.cover,
         );
-      default:
-        return null;
     }
+  }
+
+  /// Show dialog when pawn reaches last square
+  Future<String?> _promotionDialog(BuildContext context) async {
+    return showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return new AlertDialog(
+          title: new Text('Choose promotion'),
+          content: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              InkWell(
+                child: WhiteQueen(),
+                onTap: () {
+                  Navigator.of(context).pop("q");
+                },
+              ),
+              InkWell(
+                child: WhiteRook(),
+                onTap: () {
+                  Navigator.of(context).pop("r");
+                },
+              ),
+              InkWell(
+                child: WhiteBishop(),
+                onTap: () {
+                  Navigator.of(context).pop("b");
+                },
+              ),
+              InkWell(
+                child: WhiteKnight(),
+                onTap: () {
+                  Navigator.of(context).pop("n");
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    ).then((value) {
+      return value;
+    });
+  }
+}
+
+class BoardPiece extends StatelessWidget {
+  final String squareName;
+  final Chess game;
+
+  const BoardPiece({
+    Key? key,
+    required this.squareName,
+    required this.game,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    late Widget imageToDisplay;
+    var square = game.get(squareName);
+
+    if (game.get(squareName) == null) {
+      return Container();
+    }
+
+    String piece = (square?.color == Color.WHITE ? 'W' : 'B') +
+        (square?.type.toUpperCase() ?? 'P');
+
+    switch (piece) {
+      case "WP":
+        imageToDisplay = WhitePawn();
+        break;
+      case "WR":
+        imageToDisplay = WhiteRook();
+        break;
+      case "WN":
+        imageToDisplay = WhiteKnight();
+        break;
+      case "WB":
+        imageToDisplay = WhiteBishop();
+        break;
+      case "WQ":
+        imageToDisplay = WhiteQueen();
+        break;
+      case "WK":
+        imageToDisplay = WhiteKing();
+        break;
+      case "BP":
+        imageToDisplay = BlackPawn();
+        break;
+      case "BR":
+        imageToDisplay = BlackRook();
+        break;
+      case "BN":
+        imageToDisplay = BlackKnight();
+        break;
+      case "BB":
+        imageToDisplay = BlackBishop();
+        break;
+      case "BQ":
+        imageToDisplay = BlackQueen();
+        break;
+      case "BK":
+        imageToDisplay = BlackKing();
+        break;
+      default:
+        imageToDisplay = WhitePawn();
+    }
+
+    return imageToDisplay;
+  }
+}
+
+class PieceMoveData {
+  final String squareName;
+  final String pieceType;
+  final Color pieceColor;
+
+  PieceMoveData({
+    required this.squareName,
+    required this.pieceType,
+    required this.pieceColor,
+  });
+}
+
+class _ArrowPainter extends CustomPainter {
+  List<BoardArrow> arrows;
+  PlayerColor boardOrientation;
+
+  _ArrowPainter(this.arrows, this.boardOrientation);
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var blockSize = size.width / 8;
+    var halfBlockSize = size.width / 16;
+
+    for (var arrow in arrows) {
+      var startFile = files.indexOf(arrow.from[0]);
+      var startRank = int.parse(arrow.from[1]) - 1;
+      var endFile = files.indexOf(arrow.to[0]);
+      var endRank = int.parse(arrow.to[1]) - 1;
+
+      int effectiveRowStart = 0;
+      int effectiveColumnStart = 0;
+      int effectiveRowEnd = 0;
+      int effectiveColumnEnd = 0;
+
+      if (boardOrientation == PlayerColor.black) {
+        effectiveColumnStart = 7 - startFile;
+        effectiveColumnEnd = 7 - endFile;
+        effectiveRowStart = startRank;
+        effectiveRowEnd = endRank;
+      } else {
+        effectiveColumnStart = startFile;
+        effectiveColumnEnd = endFile;
+        effectiveRowStart = 7 - startRank;
+        effectiveRowEnd = 7 - endRank;
+      }
+
+      var startOffset = Offset(
+          ((effectiveColumnStart + 1) * blockSize) - halfBlockSize,
+          ((effectiveRowStart + 1) * blockSize) - halfBlockSize);
+      var endOffset = Offset(
+          ((effectiveColumnEnd + 1) * blockSize) - halfBlockSize,
+          ((effectiveRowEnd + 1) * blockSize) - halfBlockSize);
+
+      var yDist = 0.8 * (endOffset.dy - startOffset.dy);
+      var xDist = 0.8 * (endOffset.dx - startOffset.dx);
+
+      var paint = Paint()
+        ..strokeWidth = halfBlockSize * 0.8
+        ..color = arrow.color;
+
+      canvas.drawLine(startOffset,
+          Offset(startOffset.dx + xDist, startOffset.dy + yDist), paint);
+
+      var slope =
+          (endOffset.dy - startOffset.dy) / (endOffset.dx - startOffset.dx);
+
+      var newLineSlope = -1 / slope;
+
+      var points = _getNewPoints(
+          Offset(startOffset.dx + xDist, startOffset.dy + yDist),
+          newLineSlope,
+          halfBlockSize);
+      var newPoint1 = points[0];
+      var newPoint2 = points[1];
+
+      var path = Path();
+
+      path.moveTo(endOffset.dx, endOffset.dy);
+      path.lineTo(newPoint1.dx, newPoint1.dy);
+      path.lineTo(newPoint2.dx, newPoint2.dy);
+      path.close();
+
+      canvas.drawPath(path, paint);
+    }
+  }
+
+  List<Offset> _getNewPoints(Offset start, double slope, double length) {
+    if (slope == double.infinity || slope == double.negativeInfinity) {
+      return [
+        Offset(start.dx, start.dy + length),
+        Offset(start.dx, start.dy - length)
+      ];
+    }
+
+    return [
+      Offset(start.dx + (length / sqrt(1 + (slope * slope))),
+          start.dy + ((length * slope) / sqrt(1 + (slope * slope)))),
+      Offset(start.dx - (length / sqrt(1 + (slope * slope))),
+          start.dy - ((length * slope) / sqrt(1 + (slope * slope)))),
+    ];
+  }
+
+  @override
+  bool shouldRepaint(_ArrowPainter oldDelegate) {
+    return arrows != oldDelegate.arrows;
   }
 }

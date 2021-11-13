@@ -1,52 +1,79 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chess_board/src/chess_board.dart';
+import 'package:flutter_chess_board/flutter_chess_board.dart';
 
-void main() => runApp(new MyApp());
+void main() {
+  runApp(const MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
-    return new MaterialApp(
+    return MaterialApp(
       title: 'Flutter Demo',
-      theme: new ThemeData(
+      theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: new MyHomePage(),
+      home: const HomePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
+
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
+  ChessBoardController controller = ChessBoardController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ChessBoard(
-              onMove: (move) {
-                print(move);
+      appBar: AppBar(
+        title: const Text('Chess Demo'),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Center(
+              child: ChessBoard(
+                controller: controller,
+                boardColor: BoardColor.orange,
+                arrows: [
+                  BoardArrow(
+                    from: 'd2',
+                    to: 'd4',
+                    //color: Colors.red.withOpacity(0.5),
+                  ),
+                  BoardArrow(
+                    from: 'e7',
+                    to: 'e5',
+                    color: Colors.red.withOpacity(0.7),
+                  ),
+                ],
+                boardOrientation: PlayerColor.white,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ValueListenableBuilder<Chess>(
+              valueListenable: controller,
+              builder: (context, game, _) {
+                return Text(
+                  controller.getSan().fold(
+                        '',
+                        (previousValue, element) =>
+                            previousValue + '\n' + (element ?? ''),
+                      ),
+                );
               },
-              onCheck: (color) {
-                print(color);
-              },
-              onCheckMate: (color) {
-                print(color);
-              },
-              onDraw: () {},
-              size: MediaQuery.of(context).size.width,
-              enableUserMoves: true,
-            )
-          ],
-        ),
+            ),
+          ),
+        ],
       ),
     );
   }
