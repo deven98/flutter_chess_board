@@ -1,27 +1,56 @@
 # flutter_chess_board
 
-A Chessboard Widget for Flutter. Full support for PGN, FEN, SAN. Undo move, multiple board colors and arrow support.
+A full-fledged Chessboard widget for Flutter. Includes the Chessboard widget, stores game 
+state, and includes a controller to check and manipulate game state. 
 
-v1.0 now has a new architecture where the [ChessBoardController] holds the state of the game.
-`scoped_model` is now removed.
+Full support for formats like PGN, FEN as well as ASCII. Supports multiple colors and displaying 
+arrows on the board. Easy access to making / undoing moves on the board. 
 
-Arrows on the board are now supported.
+Note: v1.0+ is a major refactor and the earlier architecture which used `scoped_model` internally 
+is no longer in use. The `ChessBoardController` now stores the state of the game as well as contains 
+options to change and check state. Arrows on the board are now supported.
 
-![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_4.png)
+## Setting Up
 
-![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png)
+Add a `ChessBoard` widget and attach a `ChessBoardController` to it.
 
-![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_2.png)
+Let's also set the board color and specify the board orientation (default is towards white).
 
-![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_3.png)
+```dart
+import 'package:flutter/material.dart';
+import 'package:flutter_chess_board/flutter_chess_board.dart';
+        
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
-### Import the package 
+  @override
+  _HomePageState createState() => _HomePageState();
+}
 
-To use this package, [add chess_board as a dependency](https://pub.dartlang.org/packages/flutter_chess_board#-installing-tab-) in your pubspec.yaml
+class _HomePageState extends State<HomePage> {
+  ChessBoardController controller = ChessBoardController();
 
-### Example
-
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Chess Demo'),
+      ),
+      body: Center(
+        child: ChessBoard(
+          controller: controller,
+          boardColor: BoardColor.orange,
+          boardOrientation: PlayerColor.white,
+        ),
+      ),
+    );
+  }
+}
 ```
+
+Let's try to display arrows on the board and also display moves of the current game:
+
+```dart
 import 'package:flutter/material.dart';
 import 'package:flutter_chess_board/flutter_chess_board.dart';
         
@@ -80,8 +109,80 @@ class _HomePageState extends State<HomePage> {
 }
 ```
 
-### Getting Started
+This gives us:
 
-For help getting started with Flutter, view our online [documentation](https://flutter.io/).
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_4.png)
 
-For help on editing package code, view the [documentation](https://flutter.io/developing-packages/).
+### Watch for game changes
+
+You can listen to game state changes (move, half moves, etc) using either a listener or a `ValueListenableBuilder`:
+
+```dart
+  ChessBoardController controller = ChessBoardController();
+  
+  @override
+  void initState() {
+    super.initState();
+    controller.addListener(() {
+      // Do something here
+    });
+  }
+```
+
+```dart
+  ValueListenableBuilder<Chess>(
+    valueListenable: controller,
+    builder: (context, game, _) {
+      // Build on new game state
+    },
+  ),
+```
+
+## Checking Game States
+
+The `ChessBoardController` holds the game itself and you can do various kinds of things using it:
+
+### Load New Game
+
+`controller.loadPgn('demo PGN')`
+
+`controller.loadFen('demo FEN')`
+
+### Make Move:
+
+`controller.makeMove(from: 'd2', to: 'd4')`
+
+### Undo Move:
+
+`controller.undoMove()`
+
+### Check states:
+
+`controller.isCheckMate()`
+
+`controller.isDraw()`
+
+`controller.isStaleMate()`
+
+`controller.isThreefoldRepetition`
+
+...and more...
+
+### Move Count 
+
+`controller.getMoveCount()`
+
+`controller.getHalfMoveCount()`
+
+### Other Board Types
+
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot.png)
+
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_2.png)
+
+![alt text](https://github.com/deven98/flutter_chess_board/blob/master/screen_shot_3.png)
+
+### Import the package 
+
+To use this package, [add chess_board as a dependency](https://pub.dartlang.org/packages/flutter_chess_board#-installing-tab-) in your pubspec.yaml
+
