@@ -1,3 +1,7 @@
+## [1.0.1] - 23/11/2021.
+
+* Added `isInCheck` to `ChessBoardController`.
+
 ## [1.0.0+3] - 14/11/2021.
 
 * README update

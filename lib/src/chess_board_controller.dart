@@ -76,6 +76,10 @@ class ChessBoardController extends ValueNotifier<Chess> {
     notifyListeners();
   }
 
+  bool isInCheck() {
+    return game.in_check;
+  }
+
   bool isCheckMate() {
     return game.in_checkmate;
   }
