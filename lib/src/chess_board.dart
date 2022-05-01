@@ -27,10 +27,6 @@ class ChessBoard extends StatefulWidget {
 
   final List<BoardArrow> arrows;
 
-  /// To show available
-  /// moves of each piece when tapped
-  final List<String> availableMovesForPoint;
-
   const ChessBoard(
       {Key? key,
       required this.controller,
@@ -39,8 +35,7 @@ class ChessBoard extends StatefulWidget {
       this.boardColor = BoardColor.brown,
       this.boardOrientation = PlayerColor.white,
       this.onMove,
-      this.arrows = const [],
-      this.availableMovesForPoint = const []})
+      this.arrows = const []})
       : super(key: key);
 
   @override
