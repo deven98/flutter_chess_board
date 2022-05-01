@@ -27,22 +27,29 @@ class ChessBoard extends StatefulWidget {
 
   final List<BoardArrow> arrows;
 
-  const ChessBoard({
-    Key? key,
-    required this.controller,
-    this.size,
-    this.enableUserMoves = true,
-    this.boardColor = BoardColor.brown,
-    this.boardOrientation = PlayerColor.white,
-    this.onMove,
-    this.arrows = const [],
-  }) : super(key: key);
+  /// To show available
+  /// moves of each piece when tapped
+  final List<String> availableMovesForPoint;
+
+  const ChessBoard(
+      {Key? key,
+      required this.controller,
+      this.size,
+      this.enableUserMoves = true,
+      this.boardColor = BoardColor.brown,
+      this.boardOrientation = PlayerColor.white,
+      this.onMove,
+      this.arrows = const [],
+      this.availableMovesForPoint = const []})
+      : super(key: key);
 
   @override
   State<ChessBoard> createState() => _ChessBoardState();
 }
 
 class _ChessBoardState extends State<ChessBoard> {
+  bool? availableMovesCanBeShowed = false;
+  PieceMoveData? selectedPieceMoveData;
   @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<Chess>(
@@ -127,11 +134,14 @@ class _ChessBoardState extends State<ChessBoard> {
                           to: squareName,
                         );
                       }
+
                       if (game.turn != moveColor) {
                         widget.onMove?.call();
+                      } else {
+                        availableMovesCanBeShowed = true;
                       }
+                      selectedPieceMoveData = pieceMoveData;
                     });
-
                     return dragTarget;
                   },
                   itemCount: 64,
@@ -150,6 +160,19 @@ class _ChessBoardState extends State<ChessBoard> {
                     ),
                   ),
                 ),
+              if (availableMovesCanBeShowed == true)
+                IgnorePointer(
+                    child: AspectRatio(
+                  aspectRatio: 1.0,
+                  child: CustomPaint(
+                    child: Container(),
+                    painter: _AvailableMovesPainter(
+                      widget.controller.getPossibleMoves(),
+                      widget.boardOrientation,
+                      selectedPieceMoveData,
+                    ),
+                  ),
+                ))
             ],
           ),
         );
@@ -404,5 +427,58 @@ class _ArrowPainter extends CustomPainter {
   @override
   bool shouldRepaint(_ArrowPainter oldDelegate) {
     return arrows != oldDelegate.arrows;
+  }
+}
+
+class _AvailableMovesPainter extends CustomPainter {
+  List<Move> availableMoves;
+  PlayerColor boardOrientation;
+  PieceMoveData? selectedPiece;
+
+  _AvailableMovesPainter(
+    this.availableMoves,
+    this.boardOrientation,
+    this.selectedPiece,
+  );
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    var blockSize = size.width / 8;
+    var halfBlockSize = size.width / 16;
+
+    List<Move> availableMoveList = availableMoves.where((element) {
+      return element.fromAlgebraic == selectedPiece?.squareName;
+    }).toList();
+
+    for (var move in availableMoveList) {
+      var startFile = files.indexOf(move.toAlgebraic[0]);
+      var startRank = int.parse(move.toAlgebraic[1]) - 1;
+
+      int effectiveRowStart = 0;
+      int effectiveColumnStart = 0;
+
+      if (boardOrientation == PlayerColor.black) {
+        effectiveColumnStart = 7 - startFile;
+        effectiveRowStart = startRank;
+      } else {
+        effectiveColumnStart = startFile;
+        effectiveRowStart = 7 - startRank;
+      }
+
+      var offset = Offset(
+          ((effectiveColumnStart + 1) * blockSize) - halfBlockSize,
+          ((effectiveRowStart + 1) * blockSize) - halfBlockSize);
+
+      var paint = Paint()
+        ..strokeWidth = halfBlockSize * 0.8
+        ..color = Colors.redAccent;
+
+      canvas.drawCircle(offset, 5.0, paint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(_AvailableMovesPainter oldDelegate) {
+    return availableMoves != oldDelegate.availableMoves;
   }
 }
