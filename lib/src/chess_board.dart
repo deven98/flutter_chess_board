@@ -81,16 +81,25 @@ class _ChessBoardState extends State<ChessBoard> {
                     );
 
                     var draggable = game.get(squareName) != null
-                        ? Draggable<PieceMoveData>(
-                            child: piece,
-                            feedback: piece,
-                            childWhenDragging: SizedBox(),
-                            data: PieceMoveData(
-                              squareName: squareName,
-                              pieceType:
-                                  pieceOnSquare?.type.toUpperCase() ?? 'P',
-                              pieceColor: pieceOnSquare?.color ?? Color.WHITE,
-                            ),
+                        ? LayoutBuilder(
+                            builder: (context, constraints) {
+                              return Draggable<PieceMoveData>(
+                                child: piece,
+                                feedback: SizedBox(
+                                  height: constraints.maxHeight,
+                                  width: constraints.maxWidth,
+                                  child: piece,
+                                ),
+                                childWhenDragging: const SizedBox(),
+                                data: PieceMoveData(
+                                  squareName: squareName,
+                                  pieceType:
+                                      pieceOnSquare?.type.toUpperCase() ?? 'P',
+                                  pieceColor:
+                                      pieceOnSquare?.color ?? Color.WHITE,
+                                ),
+                              );
+                            },
                           )
                         : Container();
 
