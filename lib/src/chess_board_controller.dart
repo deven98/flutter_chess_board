@@ -40,9 +40,6 @@ class ChessBoardController extends ValueNotifier<Chess> {
   }
 
   void undoMove() {
-    if (game.half_moves == 0) {
-      return;
-    }
     game.undo_move();
     notifyListeners();
   }
