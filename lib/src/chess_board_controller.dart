@@ -18,25 +18,41 @@ class ChessBoardController extends ValueNotifier<Chess> {
         super(game);
 
   /// Makes move on the board
-  void makeMove({required String from, required String to}) {
-    game.move({"from": from, "to": to});
+  bool makeMove({required String from, required String to}) {
+    bool res = game.move({"from": from, "to": to});
     notifyListeners();
+    return res;
+  }
+
+  /// Makes move on the board
+  bool makeMoveUci({required String uci}) {
+    String src = uci.substring(0, 2);
+    String dst = uci.substring(2, 4);
+    String promotion = uci.substring(4);
+    if (promotion.isEmpty)
+      return makeMove(from: src, to: dst);
+    else
+      return makeMoveWithPromotion(
+          from: src, to: dst, pieceToPromoteTo: promotion);
   }
 
   /// Makes move and promotes pawn to piece (from is a square like d4, to is also a square like e3, pieceToPromoteTo is a String like "Q".
   /// pieceToPromoteTo String will be changed to enum in a future update and this method will be deprecated in the future
-  void makeMoveWithPromotion(
+  bool makeMoveWithPromotion(
       {required String from,
       required String to,
       required String pieceToPromoteTo}) {
-    game.move({"from": from, "to": to, "promotion": pieceToPromoteTo});
+    bool res =
+        game.move({"from": from, "to": to, "promotion": pieceToPromoteTo});
     notifyListeners();
+    return res;
   }
 
   /// Makes move on the board
-  void makeMoveWithNormalNotation(String move) {
-    game.move(move);
+  bool makeMoveWithNormalNotation(String move) {
+    bool res = game.move(move);
     notifyListeners();
+    return res;
   }
 
   void undoMove() {
